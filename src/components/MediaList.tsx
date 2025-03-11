@@ -1,9 +1,8 @@
-import { fetchAllMedia } from '@/models/mediaModel';
-import { fetchTagsByMediaId } from '@/models/tagModel';
+import { fetchMediaByTagName, fetchTagsByMediaId } from '@/models/tagModel';
 import Image from 'next/image';
 import Link from 'next/link';
 const MediaList = async () => {
-  const mediaList = await fetchAllMedia();
+  const mediaList = await fetchMediaByTagName('ilenApp');
 
   if (!mediaList) {
     return <p>No media found</p>;
