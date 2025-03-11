@@ -1,10 +1,11 @@
-import { getSession } from '@/lib/authActions';
+import { getSession, requireAuth } from '@/lib/authActions';
 import { fetchData } from '@/lib/functions';
 import { postMedia } from '@/models/mediaModel';
-import { UploadResponse } from 'hybrid-types';
+import { MediaResponse, UploadResponse } from 'hybrid-types';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
+  requireAuth();
   try {
     // TODO: get the form data from the request
     const formData = await request.formData();
@@ -61,9 +62,9 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const uploadResponse: UploadResponse = {
+    const uploadResponse: MediaResponse = {
       message: 'Media added to database',
-      data: postResult,
+      media: postResult,
     };
 
     return new NextResponse(JSON.stringify(uploadResponse), {
