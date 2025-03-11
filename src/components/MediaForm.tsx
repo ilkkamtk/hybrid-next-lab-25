@@ -27,7 +27,7 @@ const MediaForm = () => {
         throw new CustomError('Error uploading media', 500);
       }
 
-      // lisätään tägi
+      // lisätään tägi lomakkeesta
       const data = {
         tag_name: formData.get('tag') as string,
         media_id: uploadResult.media.media_id,
@@ -47,6 +47,28 @@ const MediaForm = () => {
       );
       if (!tagResult) {
         throw new CustomError('Error adding tag', 500);
+      }
+
+      // lisätään sovelluskohtainen tägi
+      const appData = {
+        tag_name: 'ilenApp',
+        media_id: uploadResult.media.media_id,
+      };
+
+      const appOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'appilcation/json',
+        },
+        body: JSON.stringify(appData),
+      };
+
+      const appResult = await fetchData<MessageResponse>(
+        '/api/tags',
+        appOptions,
+      );
+      if (!appResult) {
+        throw new CustomError('Error adding appTag', 500);
       }
 
       router.push('/');
